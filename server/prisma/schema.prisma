@@ -13,3 +13,19 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model lm_users {
+  id           String        @id @default(uuid())
+  name         String        @unique
+  active       Boolean       @default(true)
+  roleId       String
+  
+  role lm_user_role? @relation(fields: [roleId], references: [id])
+}
+
+model lm_user_role {
+  id          String @id @default(uuid())
+  description String
+
+  lm_users lm_users[]
+}
