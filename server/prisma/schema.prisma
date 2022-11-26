@@ -29,3 +29,10 @@ model lm_user_role {
 
   lm_users lm_users[]
 }
+
+model lm_clients {
+  id       String  @id @default(uuid())
+  document Int     @unique
+  name     String
+  active   Boolean @default(true)
+}
