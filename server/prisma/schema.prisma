@@ -15,10 +15,13 @@ datasource db {
 }
 
 model lm_users {
-  id     String  @id @default(uuid())
-  name   String  @unique
-  active Boolean @default(true)
-  roleId String
+  id       String  @id @default(uuid())
+  firtName String
+  lastName String
+  userName String  @unique
+  passWord String
+  active   Boolean @default(true)
+  roleId   String
 
   role lm_user_role? @relation(fields: [roleId], references: [id])
 }
@@ -27,7 +30,7 @@ model lm_user_role {
   id          String @id @default(uuid())
   description String
 
-  lm_users lm_users[]
+  users lm_users[]
 }
 
 model lm_clients {
@@ -38,9 +41,9 @@ model lm_clients {
 }
 
 model lm_services {
-  id         String       @id @default(uuid())
-  name       String       @unique
-  lm_details lm_details[]
+  id      String       @id @default(uuid())
+  name    String       @unique
+  details lm_details[]
 }
 
 model lm_installments {
@@ -57,7 +60,7 @@ model lm_payment_type {
 model lm_details {
   id          String @id @default(uuid())
   description String
-  serviceId  String
+  serviceId   String
 
   service lm_services @relation(fields: [serviceId], references: [id])
 }
