@@ -15,11 +15,11 @@ datasource db {
 }
 
 model lm_users {
-  id           String        @id @default(uuid())
-  name         String        @unique
-  active       Boolean       @default(true)
-  roleId       String
-  
+  id     String  @id @default(uuid())
+  name   String  @unique
+  active Boolean @default(true)
+  roleId String
+
   role lm_user_role? @relation(fields: [roleId], references: [id])
 }
 
@@ -35,4 +35,9 @@ model lm_clients {
   document Int     @unique
   name     String
   active   Boolean @default(true)
+}
+
+model lm_services {
+  id   String @id @default(uuid())
+  name String @unique
 }
