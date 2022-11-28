@@ -38,8 +38,9 @@ model lm_clients {
 }
 
 model lm_services {
-  id   String @id @default(uuid())
-  name String @unique
+  id         String       @id @default(uuid())
+  name       String       @unique
+  lm_details lm_details[]
 }
 
 model lm_installments {
@@ -51,4 +52,12 @@ model lm_installments {
 model lm_payment_type {
   id          String @id @default(uuid())
   description String
+}
+
+model lm_details {
+  id          String @id @default(uuid())
+  description String
+  serviceId  String
+
+  service lm_services @relation(fields: [serviceId], references: [id])
 }
