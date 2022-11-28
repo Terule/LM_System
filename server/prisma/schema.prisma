@@ -41,3 +41,14 @@ model lm_services {
   id   String @id @default(uuid())
   name String @unique
 }
+
+model lm_installments {
+  id       String  @id @default(uuid())
+  quantity Int
+  value    Decimal
+}
+
+model lm_payment_type {
+  id          String @id @default(uuid())
+  description String
+}
