@@ -27,10 +27,9 @@ model lm_users {
 }
 
 model lm_user_role {
-  id          String @id @default(uuid())
+  id          String     @id @default(uuid())
   description String
-
-  users lm_users[]
+  user        lm_users[]
 }
 
 model lm_clients {
