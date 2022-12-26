@@ -15,13 +15,13 @@ datasource db {
 }
 
 model lm_users {
-  id       String  @id @default(uuid())
-  firtName String
-  lastName String
-  userName String  @unique
-  passWord String
-  active   Boolean @default(true)
-  roleId   String
+  id        String  @id @default(uuid())
+  firstName String
+  lastName  String
+  username  String  @unique
+  password  String
+  active    Boolean @default(true)
+  roleId    String
 
   role lm_user_role @relation(fields: [roleId], references: [id])
 }
