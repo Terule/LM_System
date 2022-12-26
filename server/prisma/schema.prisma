@@ -5,11 +5,95 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator erd {
-  provider = "prisma-erd-generator"
-}
+// generator erd {
+//   provider = "prisma-erd-generator"
+// }
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model lm_users {
+  id       String  @id @default(uuid())
+  firtName String
+  lastName String
+  userName String  @unique
+  passWord String
+  active   Boolean @default(true)
+  roleId   String
+
+  role lm_user_role @relation(fields: [roleId], references: [id])
+}
+
+model lm_user_role {
+  id          String @id @default(uuid())
+  description String
+
+  users lm_users[]
+}
+
+model lm_clients {
+  id       String    @id @default(uuid())
+  document Int       @unique
+  name     String
+  active   Boolean   @default(true)
+  lm_sell  lm_sell[]
+}
+
+model lm_services {
+  id      String       @id @default(uuid())
+  name    String       @unique
+  details lm_details[]
+}
+
+model lm_installments {
+  id          String   @id @default(uuid())
+  quantity    Int
+  value       Decimal
+  dueDate     DateTime
+  paymentDate DateTime
+  paymentId   String
+
+  payment lm_payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+}
+
+model lm_payment_type {
+  id          String       @id @default(uuid())
+  description String
+  payment     lm_payment[]
+}
+
+model lm_details {
+  id          String  @id @default(uuid())
+  description String
+  value       Decimal
+  serviceId   String
+  sellId      String
+
+  sell    lm_sell     @relation(fields: [sellId], references: [id])
+  service lm_services @relation(fields: [serviceId], references: [id])
+
+  @@unique([serviceId, sellId])
+}
+
+model lm_sell {
+  id        String   @id @default(uuid())
+  clientId  String
+  paymentId String   @unique
+  created   DateTime @default(now())
+
+  client        lm_clients   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  serviceDetail lm_details[]
+  lm_payment    lm_payment?
+}
+
+model lm_payment {
+  id            String @id @default(uuid())
+  paymentTypeId String
+  sellId        String @unique
+
+  paymentType  lm_payment_type   @relation(fields: [paymentTypeId], references: [id])
+  sell         lm_sell           @relation(fields: [sellId], references: [id], onDelete: Cascade)
+  installments lm_installments[]
 }
